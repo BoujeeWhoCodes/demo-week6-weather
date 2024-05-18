@@ -1,34 +1,45 @@
-/** @format */
+
 
 import React, { useState } from 'react';
-import WeatherInfo from './WeatherInfo';
-import WeatherForecast from "./WeatherForecast";
 import axios from 'axios';
+import { TailSpin } from 'react-loader-spinner';
+import WeatherInfo from './WeatherInfo';
+import Forecast from './Forecast';
 import './Weather.css';
 
 export default function Weather(props) {
-	const [city, setCity] = useState(props.defaultCity);
 	const [weatherData, setWeatherData] = useState({ ready: false });
+	const [city, setCity] = useState(props.defaultCity);
+	const [unit, setUnit] = useState('celsius');
 
-	function handleResponse(response) {
-		console.log(response.data);
+	function changeUnit() {
+		if (unit === 'celsius') {
+			setUnit('fahrenheit');
+		} else {
+			setUnit('celsius');
+		}
+	}
+
+	function getWeather(response) {
 		setWeatherData({
 			ready: true,
+			city: response.data.name,
 			coordinates: response.data.coord,
-			temperature: response.data.main.temp,
-			humidity: response.data.main.humidity,
 			date: new Date(response.data.dt * 1000),
 			description: response.data.weather[0].description,
-			icon: response.data.weather[0].icon,
+			temperature: response.data.main.temp,
+			feelsLike: response.data.main.feels_like,
+			humidity: response.data.main.humidity,
 			wind: response.data.wind.speed,
-			city: response.data.name,
+			icon: response.data.weather[0].icon,
 		});
 	}
 
 	function search() {
-		const apiKey = '34ae1065362d42545661451bda2b8a1f';
+		const apiKey = '39576631014d30e33bf03cff87abc13d';
 		let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-		axios.get(apiUrl).then(handleResponse);
+
+		axios.get(apiUrl).then(getWeather);
 	}
 
 	function handleSubmit(event) {
@@ -36,7 +47,7 @@ export default function Weather(props) {
 		search();
 	}
 
-	function handleCityChange(event) {
+	function handleInput(event) {
 		setCity(event.target.value);
 	}
 
@@ -44,31 +55,47 @@ export default function Weather(props) {
 		return (
 			<div className='Weather'>
 				<form onSubmit={handleSubmit}>
-					<div className='row'>
-						<div className='col-9'>
-							<input
-								type='search'
-								placeholder='Enter a city ... '
-								className='form-control'
-								autoFocus='on'
-								onChange={handleCityChange}
-							/>
-						</div>
-						<div className='col-3'>
-							<input
-								type='submit'
-								value='Search'
-								className='btn btn-primary w-100'
-							/>
-						</div>
-					</div>
+					<input
+						type='search'
+						placeholder='Enter a city'
+						className='form-control'
+						autoFocus='on'
+						required
+						onChange={handleInput}
+					/>
+					<input
+						type='submit'
+						value='Search'
+						className='btn w-100'
+					/>
 				</form>
-				<WeatherInfo data={weatherData} />
-				<WeatherForecast coordinates={weatherData.coordinates}/>
+				<WeatherInfo
+					data={weatherData}
+					unit={unit}
+					change={changeUnit}
+				/>
+				<Forecast
+					coordinates={weatherData.coordinates}
+					unit={unit}
+					change={changeUnit}
+				/>
 			</div>
 		);
 	} else {
 		search();
-		return 'Loading...';
+		return (
+			<div className='d-flex justify-content-center p-5 m-5'>
+				<TailSpin
+					visible={true}
+					height='80'
+					width='80'
+					color='#66fcf1'
+					ariaLabel='tail-spin-loading'
+					radius='1'
+					wrapperStyle={{}}
+					wrapperClass=''
+				/>
+			</div>
+		);
 	}
 }
