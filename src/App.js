@@ -8,7 +8,7 @@ export default function App() {
 		<div className='App'>
 			<div className='container'>
 				<Weather defaultCity='New York' />
-				<footer>
+				<footer className="p-2">
 					This project was coded by{' '}
 					<a
 						href='https://www.shecodes.io/graduates/98826-elvira-lettis'
