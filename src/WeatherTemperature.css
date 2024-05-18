@@ -1,0 +1,31 @@
+.WeatherTemperature .temperature {
+  color: #66fcf1;
+  font-weight: 700;
+  font-size: 64px;
+  line-height: 1;
+  padding-left: 10px;
+}
+
+.WeatherTemperature .unit {
+  color: #66fcf1;
+  font-weight: 700;
+  position: relative;
+  bottom: 36px;
+}
+
+.WeatherTemperature a {
+  text-decoration: none;
+  color: #fff;
+  opacity: 0.5;
+}
+
+@media (max-width: 380px) {
+  .WeatherTemperature .temperature {
+    font-size: 54px;
+  }
+
+  .WeatherTemperature .unit {
+    bottom: 30px;
+    font-size: 12px;
+  }
+}
