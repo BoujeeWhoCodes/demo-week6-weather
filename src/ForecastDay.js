@@ -7,7 +7,7 @@ import './ForecastDay.css';
 export default function ForecastDay(props) {
 	function formattedDay() {
 		let date = new Date(props.data.dt * 1000);
-		let dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri' ];
+		let dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri' , 'Sat'];
 		return dayNames[date.getDay()];
 	}
 
