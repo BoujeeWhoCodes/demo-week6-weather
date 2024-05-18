@@ -1,0 +1,11 @@
+.Forecast {
+  text-align: center;
+  border-top: 1px solid rgba(31, 40, 51, 0.5);
+  font-size: 14px;
+}
+
+@media (max-width: 576px) {
+  .Forecast {
+    border: none;
+  }
+}
